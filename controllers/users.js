@@ -1,21 +1,26 @@
-const getUsers = (req, res) => {
+const User = require('../models/user')
+
+const getUsers = async (req, res) => {
+
+    const users = await User.find();
+
+
     res.json({
         ok: true,
         msg:'Hola',
-        users: [
-            {name:'Oscar', surname:'Ortiz'},
-            {name:'Gabriel', surname:'Garcia'},
-        ]
+        users
     })
 }
 
 
-const addUsers = (req, res) => {
-    console.log('req::');
-    console.log(req.body);
+const addUsers = async (req, res) => {
+    const user = new User(req.body);
+    await user.save();
+
     res.json({
         ok: true,
-        msg:'Usuario creado'
+        msg:'Usuario creado',
+        user
     })
 }
 
