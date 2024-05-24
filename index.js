@@ -7,12 +7,7 @@ const app = express();
 app.use( cors() );
 dbConnection();
 
-app.get('/', (req, res) => {
-    res.json({
-        ok: true,
-        msg:'Hola'
-    })
-})
+app.use('/api/users', require('./routes/users'));
 
 app.listen(process.env.PORT, ()=> {
     console.log('hola puerto ' +process.env.PORT);
