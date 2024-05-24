@@ -9,6 +9,17 @@ const getUsers = (req, res) => {
     })
 }
 
+
+const addUsers = (req, res) => {
+    console.log('req::');
+    console.log(req.body);
+    res.json({
+        ok: true,
+        msg:'Usuario creado'
+    })
+}
+
 module.exports = {
-    getUsers
+    getUsers,
+    addUsers
 }
