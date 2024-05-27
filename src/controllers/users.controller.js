@@ -1,10 +1,9 @@
-const { validationResult } = require('express-validator');
 const User = require('../models/user.model')
 const response = require('express');
 
 const getUsers = async (req, res) => {
 
-    const users = await User.find({}, 'name');
+    const users = await User.find({}, 'name email');
 
 
     res.json({
@@ -17,14 +16,6 @@ const getUsers = async (req, res) => {
 
 const addUsers = async (req, res = response) => {
     
-    const errors = validationResult(req);
-    if ( !errors.isEmpty() ) {
-        return res.status(400).json({
-            ok: false,
-            error: errors.mapped()
-        });
-    }
-
     try {
 
         const {email} = req.body;
