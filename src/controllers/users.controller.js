@@ -1,11 +1,11 @@
+const bcryptjs = require('bcryptjs');
 const User = require('../models/user.model')
 const response = require('express');
 
+
 const getUsers = async (req, res) => {
 
-    const users = await User.find({}, 'name email');
-
-
+    const users = await User.find({}, 'name email password');
     res.json({
         ok: true,
         msg:'Hola',
@@ -17,8 +17,8 @@ const getUsers = async (req, res) => {
 const addUsers = async (req, res = response) => {
     
     try {
-
-        const {email} = req.body;
+        console.log(req.body);
+        const {email, password} = req.body;
         const user = new User(req.body);
         const existEmail = await User.findOne({email})
 
@@ -28,6 +28,11 @@ const addUsers = async (req, res = response) => {
                 msg:'Se duplico el correo'
             })
         }
+
+        // Encriptar contraseña
+        const salt = bcryptjs.genSaltSync();
+        user.password = bcryptjs.hashSync( password, salt );
+
         await user.save();
         res.json({
             ok: true,

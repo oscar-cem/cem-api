@@ -9,6 +9,7 @@ router.get('/', getUsers);
 router.post('/', [
     check('name', 'el nombre es obligatorio').not().isEmpty(),
     check('email', 'el email es obligatorio').isEmail(),
+    check('password', 'el password es obligatorio').not().isEmpty(),
     validateInputs
 ] ,addUsers);
 
