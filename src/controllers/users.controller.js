@@ -93,8 +93,40 @@ const updateUser = async (req, res = response) => {
     }    
 }
 
+const deleteUser = async (req, res = response) => {
+    
+    try {
+        
+        const uid = req.params.id;
+        const userDB = await User.findById( uid );  
+
+
+        if (!userDB) {
+            return res.status(400).json({
+                ok:false,
+                msg:'no existe usuario'
+            });
+        }
+    
+        await User.findByIdAndDelete(uid);
+       
+        res.json({
+            ok: true,
+            msg:'Usuario eliminado',
+            userDB
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            ok:false,
+            msg:'error inesperado'
+        });
+    }    
+}
+
 module.exports = {
     getUsers,
     addUsers,
-    updateUser
+    updateUser,
+    deleteUser
 }
