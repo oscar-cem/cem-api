@@ -48,7 +48,53 @@ const addUsers = async (req, res = response) => {
     }    
 }
 
+const updateUser = async (req, res = response) => {
+    
+    try {
+        
+        const uid = req.params.id;
+        const userDB = await User.findById( uid );  
+
+
+        if (!userDB) {
+            return res.status(400).json({
+                ok:false,
+                msg:'no existe usuario'
+            });
+        }
+        // EXTRE CAMPOS A EDITAR
+        const { password, email, ...inputs } = req.body;
+
+        if (userDB.email != email) {
+
+            const existEmail = await User.findOne({ email })
+            if (existEmail) {
+                return res.status(400).json({
+                    ok:false,
+                    msg:'Se duplico el correo'
+                })
+            }
+
+        }
+
+        const userUpdated = await User.findByIdAndUpdate(uid, inputs, {new: true});
+       
+        res.json({
+            ok: true,
+            msg:'Usuario modificado',
+            userUpdated
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            ok:false,
+            msg:'error inesperado'
+        });
+    }    
+}
+
 module.exports = {
     getUsers,
-    addUsers
+    addUsers,
+    updateUser
 }
