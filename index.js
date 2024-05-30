@@ -10,6 +10,7 @@ dbConnection();
 app.use(express.json());
 
 app.use('/api/users', require('./src/routes/users.routes'));
+app.use('/api/login', require('./src/routes/auth.routes'));
 
 app.listen(process.env.PORT, ()=> {
     console.log('hola puerto ' +process.env.PORT);
