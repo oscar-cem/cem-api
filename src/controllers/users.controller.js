@@ -1,6 +1,7 @@
 const bcryptjs = require('bcryptjs');
 const User = require('../models/user.model')
 const response = require('express');
+const { buildJWT } = require('../../helpers/jwt');
 
 
 const getUsers = async (req, res) => {
@@ -9,7 +10,8 @@ const getUsers = async (req, res) => {
     res.json({
         ok: true,
         msg:'Hola',
-        users
+        users,
+        uid: req.uid
     })
 }
 
@@ -34,13 +36,19 @@ const addUsers = async (req, res = response) => {
         user.password = bcryptjs.hashSync( password, salt );
 
         await user.save();
+        const token = await buildJWT( user._id );
+
+
         res.json({
             ok: true,
             msg:'Usuario creado',
-            user
+            user,
+            token
         })
 
     } catch (error) {
+        console.log('error::');
+        console.log(error);
         res.status(500).json({
             ok:false,
             msg:'error inesperado'
